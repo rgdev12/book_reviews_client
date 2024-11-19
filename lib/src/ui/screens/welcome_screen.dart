@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../utils/constants/text_strings.dart';
 import '../../utils/constants/colors.dart';
+import 'login_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -33,7 +34,14 @@ class WelcomeScreen extends StatelessWidget {
               Column(
                 children: [
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: kPrimaryColor,
