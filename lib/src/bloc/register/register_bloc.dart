@@ -6,22 +6,23 @@ import 'register_state.dart';
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final UserService userService;
 
-  RegisterBloc({required this.userService}) : super(RegisterInitial());
+  RegisterBloc({required this.userService}) : super(RegisterInitial()) {
+    on<RegisterButtonPressed>(_onRegisterButtonPressed);
+  }
 
-  Stream<RegisterState> mapEventToState(RegisterEvent event) async* {
-    if (event is RegisterButtonPressed) {
-      yield RegisterLoading();
+  Future<void> _onRegisterButtonPressed(
+      RegisterButtonPressed event, Emitter<RegisterState> emit) async {
+    emit(RegisterLoading());
 
-      try {
-        final user = await userService.registerUser(
-          event.name,
-          event.email,
-          event.password,
-        );
-        yield RegisterSuccess(user: user);
-      } catch (error) {
-        yield RegisterFailure(error: error.toString());
-      }
+    try {
+      final user = await userService.registerUser(
+        event.name,
+        event.email,
+        event.password,
+      );
+      emit(RegisterSuccess(user: user));
+    } catch (error) {
+      emit(RegisterFailure(error: error.toString()));
     }
   }
 }
