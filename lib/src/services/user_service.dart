@@ -4,18 +4,18 @@ import 'base_service.dart';
 
 class UserService extends BaseService {
   Future<User> registerUser(String name, String email, String password) async {
-    final response = await post('/register', {
+    final response = await post('/user/register', {
       'name': name,
       'email': email,
       'password': password,
     });
 
-    // print(response);
-
     if (response.statusCode == 201) {
-      return User.fromJson(json.decode(response.body));
+      final data = json.decode(response.body);
+      return User.fromJson(data['user']);
     } else {
-      throw Exception('Failed to register user');
+      final data = json.decode(response.body);
+      throw Exception(data['message']);
     }
   }
 }
